@@ -1,188 +1,171 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import useFetch from "@/hooks/use-fetch";
-import { toast } from "sonner";
-
+import { accountSchema } from "@/app/lib/schema"; // ✅ fixed import
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
+  DrawerDescription,
+  DrawerFooter,
   DrawerClose,
 } from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { createAccount } from "@/actions/dashboard";
-import { accountSchema } from "@/app/lib/schema";
 
-export function CreateAccountDrawer({ children }) {
-  const [open, setOpen] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    watch,
-    reset,
-  } = useForm({
-    resolver: zodResolver(accountSchema),
-    defaultValues: {
-      name: "",
-      type: "CURRENT",
-      balance: "",
-      isDefault: false,
-    },
-  });
+import useFetch from "@/hooks/use-fetch";
+import { createAccount } from "@/actions/account";
 
+export function CreateAccountDrawer({ open, onClose }) {
   const {
-    loading: createAccountLoading,
-    fn: createAccountFn,
-    error,
-    data: newAccount,
-  } = useFetch(createAccount);
+  control,
+  handleSubmit,
+  reset,
+  formState: { errors },
+} = useForm({
+  resolver: zodResolver(accountSchema),   // ✅ use directly
+  defaultValues: {
+    name: "",
+    type: "CURRENT",
+    balance: 0,
+    isDefault: false,
+  },
+});
+
+  const { loading, error, fn: createAccountFn } = useFetch(createAccount);
 
   const onSubmit = async (data) => {
-    await createAccountFn(data);
+    const res = await createAccountFn(data);
+    if (res?.success) {
+      reset(); // clear form
+      onClose?.(); // close drawer safely
+    } else {
+      const errMsg = res?.error || "Unknown error (no response from server)";
+      console.error("Failed to create account:", errMsg, res);
+      alert("Failed to create account: " + errMsg);
+    }
   };
 
-  useEffect(() => {
-    if (newAccount) {
-      toast.success("Account created successfully");
-      reset();
-      setOpen(false);
-    }
-  }, [newAccount, reset]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message || "Failed to create account");
-    }
-  }, [error]);
-
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
+    <Drawer open={open} onOpenChange={(isOpen) => !isOpen && onClose?.()}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Create New Account</DrawerTitle>
+          <DrawerTitle>Create Account</DrawerTitle>
+          <DrawerDescription>
+            Fill in details to create a new account
+          </DrawerDescription>
         </DrawerHeader>
-        <div className="px-4 pb-4">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <label
-                htmlFor="name"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Account Name
-              </label>
-              <Input
-                id="name"
-                placeholder="e.g., Main Checking"
-                {...register("name")}
-              />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
+          {/* Account Name */}
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm font-medium">
+              Account Name
+            </label>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <Input id="name" placeholder="e.g., Main Checking" {...field} />
               )}
-            </div>
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
 
-            <div className="space-y-2">
-              <label
-                htmlFor="type"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Account Type
-              </label>
-              <Select
-                onValueChange={(value) => setValue("type", value)}
-                defaultValue={watch("type")}
-              >
-                <SelectTrigger id="type">
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="CURRENT">Current</SelectItem>
-                  <SelectItem value="SAVINGS">Savings</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.type && (
-                <p className="text-sm text-red-500">{errors.type.message}</p>
+          {/* Account Type */}
+          <div className="space-y-2">
+            <label htmlFor="type" className="text-sm font-medium">
+              Account Type
+            </label>
+            <Controller
+              name="type"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="CURRENT">Current</SelectItem>
+                    <SelectItem value="SAVINGS">Savings</SelectItem>
+                  </SelectContent>
+                </Select>
               )}
-            </div>
+            />
+            {errors.type && (
+              <p className="text-sm text-red-500">{errors.type.message}</p>
+            )}
+          </div>
 
-            <div className="space-y-2">
-              <label
-                htmlFor="balance"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Initial Balance
-              </label>
-              <Input
-                id="balance"
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                {...register("balance")}
-              />
-              {errors.balance && (
-                <p className="text-sm text-red-500">{errors.balance.message}</p>
+          {/* Initial Balance */}
+          <div className="space-y-2">
+            <label htmlFor="balance" className="text-sm font-medium">
+              Initial Balance
+            </label>
+            <Controller
+              name="balance"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  id="balance"
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                  {...field}
+                  value={field.value ?? ""}
+                  onChange={(e) =>
+                    field.onChange(
+                      e.target.value === "" ? "" : Number(e.target.value)
+                    )
+                  }
+                />
               )}
-            </div>
+            />
+            {errors.balance && (
+              <p className="text-sm text-red-500">{errors.balance.message}</p>
+            )}
+          </div>
 
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <div className="space-y-0.5">
-                <label
-                  htmlFor="isDefault"
-                  className="text-base font-medium cursor-pointer"
-                >
-                  Set as Default
-                </label>
-                <p className="text-sm text-muted-foreground">
-                  This account will be selected by default for transactions
-                </p>
-              </div>
-              <Switch
-                id="isDefault"
-                checked={watch("isDefault")}
-                onCheckedChange={(checked) => setValue("isDefault", checked)}
-              />
-            </div>
+          {/* Default Account Switch */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium">Set as default account</span>
+            <Controller
+              name="isDefault"
+              control={control}
+              render={({ field }) => (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              )}
+            />
+          </div>
 
-            <div className="flex gap-4 pt-4">
-              <DrawerClose asChild>
-                <Button type="button" variant="outline" className="flex-1">
-                  Cancel
-                </Button>
-              </DrawerClose>
-              <Button
-                type="submit"
-                className="flex-1"
-                disabled={createAccountLoading}
-              >
-                {createAccountLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  "Create Account"
-                )}
+          <DrawerFooter>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Creating..." : "Create Account"}
+            </Button>
+            <DrawerClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
               </Button>
-            </div>
-          </form>
-        </div>
+            </DrawerClose>
+          </DrawerFooter>
+
+          {error && <p className="text-sm text-red-500">{error?.message || error || "Unknown error"}</p>}
+        </form>
       </DrawerContent>
     </Drawer>
   );

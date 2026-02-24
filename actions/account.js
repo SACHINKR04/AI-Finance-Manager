@@ -3,18 +3,20 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client"; // ✅ Added this import
 
+// 🔹 Helper to safely serialize Prisma Decimal fields
 const serializeDecimal = (obj) => {
+  if (!obj) return obj;
   const serialized = { ...obj };
-  if (obj.balance) {
-    serialized.balance = obj.balance.toNumber();
-  }
-  if (obj.amount) {
-    serialized.amount = obj.amount.toNumber();
-  }
+  if (obj.balance) serialized.balance = obj.balance.toNumber();
+  if (obj.amount) serialized.amount = obj.amount.toNumber();
   return serialized;
 };
 
+/**
+ * Get account with transactions for the logged-in user
+ */
 export async function getAccountWithTransactions(accountId) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -22,21 +24,16 @@ export async function getAccountWithTransactions(accountId) {
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
-
   if (!user) throw new Error("User not found");
 
   const account = await db.account.findUnique({
-    where: {
+    where: { 
       id: accountId,
-      userId: user.id,
+      userId: user.id 
     },
     include: {
-      transactions: {
-        orderBy: { date: "desc" },
-      },
-      _count: {
-        select: { transactions: true },
-      },
+      transactions: { orderBy: { date: "desc" } },
+      _count: { select: { transactions: true } },
     },
   });
 
@@ -48,6 +45,9 @@ export async function getAccountWithTransactions(accountId) {
   };
 }
 
+/**
+ * Bulk delete transactions & update account balances
+ */
 export async function bulkDeleteTransactions(transactionIds) {
   try {
     const { userId } = await auth();
@@ -56,18 +56,12 @@ export async function bulkDeleteTransactions(transactionIds) {
     const user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
-
     if (!user) throw new Error("User not found");
 
-    // Get transactions to calculate balance changes
     const transactions = await db.transaction.findMany({
-      where: {
-        id: { in: transactionIds },
-        userId: user.id,
-      },
+      where: { id: { in: transactionIds }, userId: user.id },
     });
 
-    // Group transactions by account to update balances
     const accountBalanceChanges = transactions.reduce((acc, transaction) => {
       const change =
         transaction.type === "EXPENSE"
@@ -77,40 +71,32 @@ export async function bulkDeleteTransactions(transactionIds) {
       return acc;
     }, {});
 
-    // Delete transactions and update account balances in a transaction
     await db.$transaction(async (tx) => {
-      // Delete transactions
       await tx.transaction.deleteMany({
-        where: {
-          id: { in: transactionIds },
-          userId: user.id,
-        },
+        where: { id: { in: transactionIds }, userId: user.id },
       });
 
-      // Update account balances
       for (const [accountId, balanceChange] of Object.entries(
         accountBalanceChanges
       )) {
         await tx.account.update({
           where: { id: accountId },
-          data: {
-            balance: {
-              increment: balanceChange,
-            },
-          },
+          data: { balance: { increment: balanceChange } },
         });
       }
     });
 
     revalidatePath("/dashboard");
     revalidatePath("/account/[id]");
-
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
   }
 }
 
+/**
+ * Update default account for logged-in user
+ */
 export async function updateDefaultAccount(accountId) {
   try {
     const { userId } = await auth();
@@ -119,32 +105,60 @@ export async function updateDefaultAccount(accountId) {
     const user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
+    if (!user) throw new Error("User not found");
 
-    if (!user) {
-      throw new Error("User not found");
-    }
-
-    // First, unset any existing default account
     await db.account.updateMany({
-      where: {
-        userId: user.id,
-        isDefault: true,
-      },
+      where: { userId: user.id, isDefault: true },
       data: { isDefault: false },
     });
 
-    // Then set the new default account
     const account = await db.account.update({
-      where: {
-        id: accountId,
-        userId: user.id,
-      },
+      where: { id: accountId, userId: user.id },
       data: { isDefault: true },
     });
 
     revalidatePath("/dashboard");
-    return { success: true, data: serializeTransaction(account) };
+    return { success: true, data: serializeDecimal(account) };
   } catch (error) {
     return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Create a new account for the logged-in user
+ */
+export async function createAccount({ name, type, balance, isDefault }) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+    if (!user) throw new Error("User not found");
+
+    // 🔹 If new account is default, unset previous default accounts
+    if (isDefault) {
+      await db.account.updateMany({
+        where: { userId: user.id, isDefault: true },
+        data: { isDefault: false },
+      });
+    }
+
+    const account = await db.account.create({
+      data: {
+        name,
+        type: type.toUpperCase(), // ✅ Ensure enum matches Prisma (CURRENT / SAVINGS)
+        balance: new Prisma.Decimal(balance || 0), // ✅ Fix Decimal issue
+        isDefault: Boolean(isDefault),
+        userId: user.id,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    return { success: true, data: serializeDecimal(account) };
+  } catch (error) {
+    console.error("Error creating account:", error);
+    return { success: false, error: error?.message || "Unknown error" };
   }
 }
