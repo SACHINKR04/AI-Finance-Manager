@@ -25,6 +25,8 @@ import {
 
 import useFetch from "@/hooks/use-fetch";
 import { createAccount } from "@/actions/account";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function CreateAccountDrawer({ open, onClose }) {
   const {
@@ -43,16 +45,26 @@ export function CreateAccountDrawer({ open, onClose }) {
 });
 
   const { loading, error, fn: createAccountFn } = useFetch(createAccount);
+  const router = useRouter();
 
   const onSubmit = async (data) => {
-    const res = await createAccountFn(data);
-    if (res?.success) {
-      reset(); // clear form
-      onClose?.(); // close drawer safely
-    } else {
-      const errMsg = res?.error || "Unknown error (no response from server)";
-      console.error("Failed to create account:", errMsg, res);
-      alert("Failed to create account: " + errMsg);
+    try {
+      const res = await createAccountFn(data);
+      if (res?.success) {
+        toast.success("Account created successfully!");
+        reset({ name: "", type: "CURRENT", balance: "", isDefault: false });
+        onClose?.();
+        
+        // Use the user's requested hard refresh strategy
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      } else {
+        const errMsg = res?.error || "Unknown error";
+        toast.error("Failed to create account: " + errMsg);
+      }
+    } catch (error) {
+      toast.error(error?.message || "An unexpected error occurred");
     }
   };
 

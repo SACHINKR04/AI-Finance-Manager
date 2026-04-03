@@ -14,7 +14,7 @@ export const statsData = [
     label: "Active Users",
   },
   {
-    value: "$2B+",
+    value: "₹15,000Cr+",
     label: "Transactions Tracked",
   },
   {
@@ -88,24 +88,21 @@ export const howItWorksData = [
 // Testimonials Data
 export const testimonialsData = [
   {
-    name: "Sarah Johnson",
+    name: "shraddha",
     role: "Small Business Owner",
-    image: "https://randomuser.me/api/portraits/women/75.jpg",
     quote:
-      "Welth has transformed how I manage my business finances. The AI insights have helped me identify cost-saving opportunities I never knew existed.",
+      "FinSight AI has transformed how I manage my business finances. The AI insights have helped me identify cost-saving opportunities I never knew existed.",
   },
   {
-    name: "Michael Chen",
+    name: "sanskar dubey",
     role: "Freelancer",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
     quote:
       "The receipt scanning feature saves me hours each month. Now I can focus on my work instead of manual data entry and expense tracking.",
   },
   {
-    name: "Emily Rodriguez",
+    name: "shikhar sinha..",
     role: "Financial Advisor",
-    image: "https://randomuser.me/api/portraits/women/74.jpg",
     quote:
-      "I recommend Welth to all my clients. The multi-currency support and detailed analytics make it perfect for international investors.",
+      "I recommend FinSight AI to all my clients. The multi-currency support and detailed analytics make it perfect for international investors.",
   },
 ];

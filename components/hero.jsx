@@ -1,60 +1,71 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const HeroSection = () => {
-  const imageRef = useRef(null);
-
-  useEffect(() => {
-    const imageElement = imageRef.current;
-
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const scrollThreshold = 100;
-
-      if (scrollPosition > scrollThreshold) {
-        imageElement.classList.add("scrolled");
-      } else {
-        imageElement.classList.remove("scrolled");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <section className="pt-40 pb-20 px-4">
-      <div className="container mx-auto text-center">
-        <h1 className="text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title">
-          Manage Your Finances <br /> with Intelligence
-        </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          An AI-powered financial management platform that helps you track,
-          analyze, and optimize your spending with real-time insights.
-        </p>
-        <div className="flex justify-center space-x-4">
+    <section className="pt-32 pb-20 px-4">
+      <div className="container mx-auto text-center flex flex-col items-center">
+        <motion.h1 
+          className="text-5xl md:text-7xl lg:text-[85px] leading-tight pb-6 text-foreground font-serif max-w-5xl mx-auto dark:text-dark-heading transition-colors"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Navigate Your Finances with Clarity and Confidence
+        </motion.h1>
+        
+        <motion.p 
+          className="text-xl text-ink-light dark:text-dark-text mb-8 max-w-2xl mx-auto font-sans transition-colors"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          A comprehensive tool designed to help you understand your spending
+          and make smarter, more confident choices, with a human touch.
+        </motion.p>
+        
+        <motion.div 
+          className="flex justify-center space-x-4 mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <Link href="/dashboard">
-            <Button size="lg" className="px-8">
+            <Button size="lg" className="px-10 py-6 text-lg rounded-2xl bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 shadow-lg transition-colors">
               Get Started
             </Button>
           </Link>
-        </div>
-        <div className="hero-image-wrapper mt-5 md:mt-0">
-          <div ref={imageRef} className="hero-image">
+        </motion.div>
+
+        <motion.div 
+          className="w-full max-w-6xl mx-auto rounded-3xl overflow-hidden shadow-2xl dark:shadow-[0_0_30px_rgba(246,173,85,0.15)] border-4 border-paper dark:border-dark-bg relative transition-all duration-500"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          {/* We are using the generated collaborative hero image swapping via tailwind classes */}
+          <div className="relative w-full aspect-[21/9]">
             <Image
-              src="/banner.jpeg"
-              width={1280}
-              height={720}
-              alt="Dashboard Preview"
-              className="rounded-lg shadow-2xl border mx-auto"
+              src="/hero-collab.png"
+              fill
+              className="object-cover block dark:hidden"
+              alt="Professionals collaborating in a warm office"
+              priority
+            />
+            <Image
+              src="/hero-dark.png"
+              fill
+              className="object-cover hidden dark:block"
+              alt="Professionals working late under warm lamplight"
               priority
             />
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

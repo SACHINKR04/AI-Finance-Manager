@@ -162,3 +162,39 @@ export async function createAccount({ name, type, balance, isDefault }) {
     return { success: false, error: error?.message || "Unknown error" };
   }
 }
+
+/**
+ * Delete an account for the logged-in user
+ */
+export async function deleteAccount(accountId) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+    if (!user) throw new Error("User not found");
+
+    const account = await db.account.findUnique({
+      where: { id: accountId, userId: user.id },
+    });
+    if (!account) throw new Error("Account not found");
+
+    if (account.isDefault) {
+      throw new Error("Cannot delete the default account. Please make another account the default first.");
+    }
+
+    await db.account.delete({
+      where: { id: accountId },
+    });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/account/[id]");
+    revalidatePath("/transaction/create");
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    return { success: false, error: error?.message || "Unknown error" };
+  }
+}
