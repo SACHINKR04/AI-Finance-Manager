@@ -162,7 +162,7 @@ const LandingPage = () => {
                       </div>
                     </div>
                     <p className="text-sm text-ink dark:text-dark-text leading-relaxed transition-colors">
-                      "{testimonial.quote}"
+                      &quot;{testimonial.quote}&quot;
                     </p>
                   </CardContent>
                 </Card>

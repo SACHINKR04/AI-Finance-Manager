@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/prisma";
 
 export async function POST(req) {
   try {
@@ -18,7 +18,7 @@ export async function POST(req) {
     }
 
     // ✅ Create account in DB
-    const account = await prisma.account.create({
+    const account = await db.account.create({
       data: {
         name,
         type, // must be "CURRENT" or "SAVINGS"

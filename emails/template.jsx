@@ -8,7 +8,7 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import { formatCurrency } from "../../lib/utils";
+import { formatCurrency } from "../lib/utils";
 
 // Dummy data for preview
 const PREVIEW_DATA = {
