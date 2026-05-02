@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   await prisma.user.upsert({
-    where: { clerkUserId: "user_31jBn6pwNO3XgCtLXZavadzwJBs" }, // unique constraint
+    where: { clerkUserId: "user_31jBn6pwNO3XgCtLXZavadzwJBs" }, 
     update: {},
     create: {
       email: "test@example.com",

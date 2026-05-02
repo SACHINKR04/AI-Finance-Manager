@@ -14,9 +14,15 @@ export const metadata = {
   description: "FinSight AI - One stop Finance Platform",
 };
 
+import { dark } from "@clerk/themes";
+
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
       <html lang="en" suppressHydrationWarning>
         <head>
           <link rel="icon" href="/logo-sm.png" sizes="any" />

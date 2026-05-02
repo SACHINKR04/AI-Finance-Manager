@@ -1,7 +1,7 @@
-// app/lib/schema.js
+
 import { z } from "zod";
 
-// ✅ Account schema
+
 export const accountSchema = z.object({
   name: z.string().min(1, "Account name is required"),
   type: z.enum(["CURRENT", "SAVINGS"], {
@@ -11,7 +11,7 @@ export const accountSchema = z.object({
   isDefault: z.boolean().default(false),
 });
 
-// ✅ Transaction schema
+
 export const transactionSchema = z
   .object({
     type: z.enum(["INCOME", "EXPENSE"], {

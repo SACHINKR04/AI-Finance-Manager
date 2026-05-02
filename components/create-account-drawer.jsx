@@ -2,7 +2,7 @@
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { accountSchema } from "@/app/lib/schema"; // ✅ fixed import
+import { accountSchema } from "@/app/lib/schema"; 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,7 +35,7 @@ export function CreateAccountDrawer({ open, onClose }) {
   reset,
   formState: { errors },
 } = useForm({
-  resolver: zodResolver(accountSchema),   // ✅ use directly
+  resolver: zodResolver(accountSchema),   
   defaultValues: {
     name: "",
     type: "CURRENT",
@@ -55,7 +55,7 @@ export function CreateAccountDrawer({ open, onClose }) {
         reset({ name: "", type: "CURRENT", balance: "", isDefault: false });
         onClose?.();
         
-        // Use the user's requested hard refresh strategy
+        
         setTimeout(() => {
           window.location.reload();
         }, 500);
@@ -79,7 +79,7 @@ export function CreateAccountDrawer({ open, onClose }) {
         </DrawerHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4">
-          {/* Account Name */}
+          
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium">
               Account Name
@@ -96,7 +96,7 @@ export function CreateAccountDrawer({ open, onClose }) {
             )}
           </div>
 
-          {/* Account Type */}
+          {}
           <div className="space-y-2">
             <label htmlFor="type" className="text-sm font-medium">
               Account Type
@@ -121,7 +121,7 @@ export function CreateAccountDrawer({ open, onClose }) {
             )}
           </div>
 
-          {/* Initial Balance */}
+          {}
           <div className="space-y-2">
             <label htmlFor="balance" className="text-sm font-medium">
               Initial Balance
@@ -150,7 +150,7 @@ export function CreateAccountDrawer({ open, onClose }) {
             )}
           </div>
 
-          {/* Default Account Switch */}
+          
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Set as default account</span>
             <Controller

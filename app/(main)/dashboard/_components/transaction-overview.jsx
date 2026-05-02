@@ -37,17 +37,17 @@ export function DashboardOverview({ accounts, transactions }) {
     accounts.find((a) => a.isDefault)?.id || accounts[0]?.id
   );
 
-  // Filter transactions for selected account
+  
   const accountTransactions = transactions.filter(
     (t) => t.accountId === selectedAccountId
   );
 
-  // Get recent transactions (last 5)
+  
   const recentTransactions = accountTransactions
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
 
-  // Calculate expense breakdown for current month
+  
   const currentDate = new Date();
   const currentMonthExpenses = accountTransactions.filter((t) => {
     const transactionDate = new Date(t.date);
@@ -58,7 +58,7 @@ export function DashboardOverview({ accounts, transactions }) {
     );
   });
 
-  // Group expenses by category
+  
   const expensesByCategory = currentMonthExpenses.reduce((acc, transaction) => {
     const category = transaction.category;
     if (!acc[category]) {
@@ -68,7 +68,7 @@ export function DashboardOverview({ accounts, transactions }) {
     return acc;
   }, {});
 
-  // Format data for pie chart
+  
   const pieChartData = Object.entries(expensesByCategory).map(
     ([category, amount]) => ({
       name: category,
@@ -78,7 +78,7 @@ export function DashboardOverview({ accounts, transactions }) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {/* Recent Transactions Card */}
+      {}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <CardTitle className="text-base font-normal">
@@ -144,7 +144,7 @@ export function DashboardOverview({ accounts, transactions }) {
         </CardContent>
       </Card>
 
-      {/* Expense Breakdown Card */}
+      
       <Card>
         <CardHeader>
           <CardTitle className="text-base font-normal">

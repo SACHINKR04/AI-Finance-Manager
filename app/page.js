@@ -17,10 +17,10 @@ import { motion } from "framer-motion";
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-background dark:bg-dark-bg text-foreground overflow-hidden font-sans transition-colors duration-500">
-      {/* Hero Section */}
+      {}
       <HeroSection />
 
-      {/* Stats Section (Optional, kept clean for continuity) */}
+      
       <section className="py-12 bg-transparent">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -43,7 +43,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      
       <section id="features" className="py-24">
         <div className="container mx-auto px-4">
           <motion.h2
@@ -56,7 +56,7 @@ const LandingPage = () => {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuresData.map((feature, index) => {
-              // Alternate border colors and dark mode glows
+              
               const IS_EVEN = index % 2 === 0;
               const borderColorClasses = IS_EVEN 
                 ? "border-teal-accent dark:border-teal-glow dark:shadow-[0_0_15px_rgba(79,209,197,0.2)]" 
@@ -89,7 +89,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      
       <section className="py-24 bg-background dark:bg-dark-bg transition-colors">
         <div className="container mx-auto px-4">
           <motion.h2
@@ -119,7 +119,7 @@ const LandingPage = () => {
                     </div>
                     <p className="text-sm text-ink-light dark:text-dark-text leading-relaxed transition-colors">{step.description}</p>
                   </CardContent>
-                  {/* Giant floating number mimicking the screenshot */}
+                  
                   <div className="absolute -top-4 -right-2 text-[120px] leading-none font-serif font-bold text-gold-accent dark:text-brass-glow opacity-20 dark:opacity-10 pointer-events-none select-none transition-colors">
                     {index + 1}
                   </div>
@@ -130,7 +130,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      
       <section id="testimonials" className="py-24 linen-texture relative border-y border-border/50 transition-colors">
         <div className="container mx-auto px-4 relative z-10">
           <motion.h2
@@ -172,7 +172,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* CTA Box Section */}
+      {}
       <section className="py-24 bg-background dark:bg-dark-bg transition-colors">
         <div className="container mx-auto px-4">
           <motion.div
@@ -189,7 +189,7 @@ const LandingPage = () => {
                   </h2>
                   
                   <div className="flex sm:flex-row justify-center items-center gap-4">
-                    <Link href="/dashboard" className="w-full sm:w-auto">
+                    <Link href="/sign-in" className="w-full sm:w-auto">
                       <Button
                         size="lg"
                         className="w-full bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 transition-transform rounded-xl px-10 py-6 text-lg font-sans shadow-lg"

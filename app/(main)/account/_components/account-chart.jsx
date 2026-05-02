@@ -40,12 +40,12 @@ export function AccountChart({ transactions }) {
       ? startOfDay(subDays(now, range.days))
       : startOfDay(new Date(0));
 
-    // Filter transactions within date range
+    
     const filtered = transactions.filter(
       (t) => new Date(t.date) >= startDate && new Date(t.date) <= endOfDay(now)
     );
 
-    // Group transactions by date
+    
     const grouped = filtered.reduce((acc, transaction) => {
       const date = format(new Date(transaction.date), "MMM dd");
       if (!acc[date]) {
@@ -59,13 +59,13 @@ export function AccountChart({ transactions }) {
       return acc;
     }, {});
 
-    // Convert to array and sort by date
+    
     return Object.values(grouped).sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     );
   }, [transactions, dateRange]);
 
-  // Calculate totals for the selected period
+  
   const totals = useMemo(() => {
     return filteredData.reduce(
       (acc, day) => ({

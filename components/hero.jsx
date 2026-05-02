@@ -35,7 +35,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Link href="/dashboard">
+          <Link href="/sign-in">
             <Button size="lg" className="px-10 py-6 text-lg rounded-2xl bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 shadow-lg transition-colors">
               Get Started
             </Button>
@@ -48,7 +48,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          {/* We are using the generated collaborative hero image swapping via tailwind classes */}
+          
           <div className="relative w-full aspect-[21/9]">
             <Image
               src="/hero-collab.png"

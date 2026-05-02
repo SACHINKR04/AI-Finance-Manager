@@ -3,9 +3,9 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client"; // ✅ Added this import
+import { Prisma } from "@prisma/client"; 
 
-// 🔹 Helper to safely serialize Prisma Decimal fields
+
 const serializeDecimal = (obj) => {
   if (!obj) return obj;
   const serialized = { ...obj };
@@ -14,9 +14,7 @@ const serializeDecimal = (obj) => {
   return serialized;
 };
 
-/**
- * Get account with transactions for the logged-in user
- */
+
 export async function getAccountWithTransactions(accountId) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -45,9 +43,7 @@ export async function getAccountWithTransactions(accountId) {
   };
 }
 
-/**
- * Bulk delete transactions & update account balances
- */
+
 export async function bulkDeleteTransactions(transactionIds) {
   try {
     const { userId } = await auth();
@@ -94,9 +90,7 @@ export async function bulkDeleteTransactions(transactionIds) {
   }
 }
 
-/**
- * Update default account for logged-in user
- */
+
 export async function updateDefaultAccount(accountId) {
   try {
     const { userId } = await auth();
@@ -124,9 +118,7 @@ export async function updateDefaultAccount(accountId) {
   }
 }
 
-/**
- * Create a new account for the logged-in user
- */
+
 export async function createAccount({ name, type, balance, isDefault }) {
   try {
     const { userId } = await auth();
@@ -137,7 +129,7 @@ export async function createAccount({ name, type, balance, isDefault }) {
     });
     if (!user) throw new Error("User not found");
 
-    // 🔹 If new account is default, unset previous default accounts
+    
     if (isDefault) {
       await db.account.updateMany({
         where: { userId: user.id, isDefault: true },
@@ -148,8 +140,8 @@ export async function createAccount({ name, type, balance, isDefault }) {
     const account = await db.account.create({
       data: {
         name,
-        type: type.toUpperCase(), // ✅ Ensure enum matches Prisma (CURRENT / SAVINGS)
-        balance: new Prisma.Decimal(balance || 0), // ✅ Fix Decimal issue
+        type: type.toUpperCase(), 
+        balance: new Prisma.Decimal(balance || 0), 
         isDefault: Boolean(isDefault),
         userId: user.id,
       },
@@ -163,9 +155,7 @@ export async function createAccount({ name, type, balance, isDefault }) {
   }
 }
 
-/**
- * Delete an account for the logged-in user
- */
+
 export async function deleteAccount(accountId) {
   try {
     const { userId } = await auth();

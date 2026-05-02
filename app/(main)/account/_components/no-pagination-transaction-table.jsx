@@ -71,11 +71,11 @@ export function NoPaginationTransactionTable({ transactions }) {
   const [recurringFilter, setRecurringFilter] = useState("");
   const router = useRouter();
 
-  // Memoized filtered and sorted transactions
+  
   const filteredAndSortedTransactions = useMemo(() => {
     let result = [...transactions];
 
-    // Apply search filter
+    
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       result = result.filter((transaction) =>
@@ -83,12 +83,12 @@ export function NoPaginationTransactionTable({ transactions }) {
       );
     }
 
-    // Apply type filter
+    
     if (typeFilter) {
       result = result.filter((transaction) => transaction.type === typeFilter);
     }
 
-    // Apply recurring filter
+    
     if (recurringFilter) {
       result = result.filter((transaction) => {
         if (recurringFilter === "recurring") return transaction.isRecurring;
@@ -96,7 +96,7 @@ export function NoPaginationTransactionTable({ transactions }) {
       });
     }
 
-    // Apply sorting
+    
     result.sort((a, b) => {
       let comparison = 0;
 
@@ -179,7 +179,7 @@ export function NoPaginationTransactionTable({ transactions }) {
       {deleteLoading && (
         <BarLoader className="mt-4" width={"100%"} color="#9333ea" />
       )}
-      {/* Filters */}
+      
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -216,7 +216,7 @@ export function NoPaginationTransactionTable({ transactions }) {
             </SelectContent>
           </Select>
 
-          {/* Bulk Actions */}
+          {}
           {selectedIds.length > 0 && (
             <div className="flex items-center gap-2">
               <Button
@@ -243,7 +243,7 @@ export function NoPaginationTransactionTable({ transactions }) {
         </div>
       </div>
 
-      {/* Transactions Table */}
+      
       <div className="rounded-md border">
         <Table>
           <TableHeader>

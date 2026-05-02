@@ -39,10 +39,10 @@ export default async function AccountPage({ params }) {
         </div>
       </div>
 
-  {/* Chart Section */}
+  
   <AccountChart transactions={transactions} />
 
-  {/* Transactions Table */}
+  {}
   <TransactionTable transactions={transactions} />
     </div>
   );

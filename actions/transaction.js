@@ -14,19 +14,19 @@ const serializeAmount = (obj) => ({
   amount: obj.amount.toNumber(),
 });
 
-// Create Transaction
+
 export async function createTransaction(data) {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error("Unauthorized");
 
-    // Get request data for ArcJet
+    
     const req = await request();
 
-    // Check rate limit
+    
     const decision = await aj.protect(req, {
       userId,
-      requested: 1, // Specify how many tokens to consume
+      requested: 1, 
     });
 
     if (decision.isDenied()) {
@@ -65,11 +65,11 @@ export async function createTransaction(data) {
       throw new Error("Account not found");
     }
 
-    // Calculate new balance
+    
     const balanceChange = data.type === "EXPENSE" ? -data.amount : data.amount;
     const newBalance = account.balance.toNumber() + balanceChange;
 
-    // Create transaction and update account balance
+    
     const transaction = await db.$transaction(async (tx) => {
       const newTransaction = await tx.transaction.create({
         data: {
@@ -132,7 +132,7 @@ export async function updateTransaction(id, data) {
 
     if (!user) throw new Error("User not found");
 
-    // Get original transaction to calculate balance change
+    
     const originalTransaction = await db.transaction.findUnique({
       where: {
         id,
@@ -145,7 +145,7 @@ export async function updateTransaction(id, data) {
 
     if (!originalTransaction) throw new Error("Transaction not found");
 
-    // Calculate balance changes
+    
     const oldBalanceChange =
       originalTransaction.type === "EXPENSE"
         ? -originalTransaction.amount.toNumber()
@@ -156,7 +156,7 @@ export async function updateTransaction(id, data) {
 
     const netBalanceChange = newBalanceChange - oldBalanceChange;
 
-    // Update transaction and account balance in a transaction
+    
     const transaction = await db.$transaction(async (tx) => {
       const updated = await tx.transaction.update({
         where: {
@@ -172,7 +172,7 @@ export async function updateTransaction(id, data) {
         },
       });
 
-      // Update account balance
+      
       await tx.account.update({
         where: { id: data.accountId },
         data: {
@@ -194,7 +194,7 @@ export async function updateTransaction(id, data) {
   }
 }
 
-// Get User Transactions
+
 export async function getUserTransactions(query = {}) {
   try {
     const { userId } = await auth();
@@ -227,14 +227,14 @@ export async function getUserTransactions(query = {}) {
   }
 }
 
-// Scan Receipt
+
 export async function scanReceipt(file) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Convert File to ArrayBuffer
+    
     const arrayBuffer = await file.arrayBuffer();
-    // Convert ArrayBuffer to Base64
+    
     const base64String = Buffer.from(arrayBuffer).toString("base64");
 
     const prompt = `
@@ -290,7 +290,7 @@ export async function scanReceipt(file) {
   }
 }
 
-// Helper function to calculate next recurring date
+
 function calculateNextRecurringDate(startDate, interval) {
   const date = new Date(startDate);
 

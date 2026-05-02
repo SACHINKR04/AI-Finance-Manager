@@ -7,21 +7,21 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client"; 
 
-// Serialize Account
+
 const serializeAccount = (obj) => {
   const serialized = { ...obj };
   if (obj.balance) serialized.balance = obj.balance.toNumber();
   return serialized;
 };
 
-// Serialize Transaction
+
 const serializeTransaction = (obj) => {
   const serialized = { ...obj };
   if (obj.amount) serialized.amount = obj.amount.toNumber();
   return serialized;
 };
 
-// ✅ Get all user accounts
+
 export async function getUserAccounts() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -42,7 +42,7 @@ export async function getUserAccounts() {
   return accounts.map(serializeAccount);
 }
 
-// ✅ Create account
+
 export async function createAccount(data) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
@@ -91,7 +91,7 @@ export async function createAccount(data) {
   return { success: true, data: serializeAccount(account) };
 }
 
-// ✅ Get dashboard transactions
+
 export async function getDashboardData() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");

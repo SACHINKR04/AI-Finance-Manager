@@ -12,8 +12,8 @@ html {
 
 @layer base {
   :root {
-    --background: 38 43% 94%; /* Cream #F7F2E9 */
-    --foreground: 25 48% 25%; /* Brown #5E3A21 */
+    --background: 38 43% 94%; 
+    --foreground: 25 48% 25%; 
     --card: 38 43% 94%;
     --card-foreground: 25 48% 25%;
     --popover: 38 43% 94%;
@@ -31,22 +31,22 @@ html {
     --border: 40 20% 80%;
     --input: 40 20% 80%;
     --ring: 25 48% 25%;
-    --chart-1: 174 26% 55%; /* Teal */
-    --chart-2: 36 55% 58%; /* Gold */
+    --chart-1: 174 26% 55%; 
+    --chart-2: 36 55% 58%; 
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
   .dark {
-    /* Muted warm tones for dark mode */
-    --background: 0 0% 10%; /* #1a1a1a charcoal */
-    --foreground: 30 50% 90%; /* #F3E5D8 */
+    
+    --background: 0 0% 10%; 
+    --foreground: 30 50% 90%; 
     --card: 0 0% 12%; 
-    --card-foreground: 30 30% 80%; /* #D1C7BD */
+    --card-foreground: 30 30% 80%; 
     --popover: 0 0% 12%;
     --popover-foreground: 30 50% 90%;
-    --primary: 34 90% 65%; /* brass outline */
+    --primary: 34 90% 65%; 
     --primary-foreground: 0 0% 10%;
     --secondary: 0 0% 15%;
     --secondary-foreground: 30 50% 90%;
