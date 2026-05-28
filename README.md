@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 💰 FinSight — AI Finance Manager
 
@@ -728,4 +728,3 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 [⬆ Back to Top](#-finsight--ai-finance-manager)
 
 </div>
-]]>
