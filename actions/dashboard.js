@@ -6,6 +6,8 @@ import { request } from "@arcjet/next";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client"; 
+import { redirect } from "next/navigation"; 
+import { checkUser } from "@/lib/checkUser";
 
 
 const serializeAccount = (obj) => {
@@ -24,11 +26,14 @@ const serializeTransaction = (obj) => {
 
 export async function getUserAccounts() {
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) redirect("/sign-in");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+  if (!user) {
+    user = await checkUser();
+  }
   if (!user) throw new Error("User not found");
 
   const accounts = await db.account.findMany({
@@ -45,7 +50,7 @@ export async function getUserAccounts() {
 
 export async function createAccount(data) {
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) redirect("/sign-in");
 
   const req = await request();
   const decision = await aj.protect(req, { userId, requested: 1 });
@@ -94,11 +99,14 @@ export async function createAccount(data) {
 
 export async function getDashboardData() {
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) redirect("/sign-in");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+  if (!user) {
+    user = await checkUser();
+  }
   if (!user) throw new Error("User not found");
 
   const transactions = await db.transaction.findMany({

@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import aj from "@/lib/arcjet";
 import { request } from "@arcjet/next";
+import { redirect } from "next/navigation";
+import { checkUser } from "@/lib/checkUser";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -18,7 +20,7 @@ const serializeAmount = (obj) => ({
 export async function createTransaction(data) {
   try {
     const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) redirect("/sign-in");
 
     
     const req = await request();
@@ -46,10 +48,12 @@ export async function createTransaction(data) {
       throw new Error("Request blocked");
     }
 
-    const user = await db.user.findUnique({
+    let user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
-
+    if (!user) {
+      user = await checkUser();
+    }
     if (!user) {
       throw new Error("User not found");
     }
@@ -101,12 +105,14 @@ export async function createTransaction(data) {
 
 export async function getTransaction(id) {
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) redirect("/sign-in");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
-
+  if (!user) {
+    user = await checkUser();
+  }
   if (!user) throw new Error("User not found");
 
   const transaction = await db.transaction.findUnique({
@@ -124,7 +130,7 @@ export async function getTransaction(id) {
 export async function updateTransaction(id, data) {
   try {
     const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) redirect("/sign-in");
 
     const user = await db.user.findUnique({
       where: { clerkUserId: userId },
@@ -198,12 +204,14 @@ export async function updateTransaction(id, data) {
 export async function getUserTransactions(query = {}) {
   try {
     const { userId } = await auth();
-    if (!userId) throw new Error("Unauthorized");
+    if (!userId) redirect("/sign-in");
 
-    const user = await db.user.findUnique({
+    let user = await db.user.findUnique({
       where: { clerkUserId: userId },
     });
-
+    if (!user) {
+      user = await checkUser();
+    }
     if (!user) {
       throw new Error("User not found");
     }
