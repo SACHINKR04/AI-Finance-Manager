@@ -14,6 +14,8 @@ import HeroSection from "@/components/hero";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-background dark:bg-dark-bg text-foreground overflow-hidden font-sans transition-colors duration-500">
@@ -189,18 +191,30 @@ const LandingPage = () => {
                   </h2>
                   
                   <div className="flex sm:flex-row justify-center items-center gap-4">
-                    <Link href="/sign-in" className="w-full sm:w-auto">
-                      <Button
-                        size="lg"
-                        className="w-full bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 transition-transform rounded-xl px-10 py-6 text-lg font-sans shadow-lg"
-                      >
-                        Start Your Free Trial
-                      </Button>
-                    </Link>
+                    <SignedOut>
+                      <SignInButton forceRedirectUrl="/dashboard">
+                        <Button
+                          size="lg"
+                          className="w-full bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 transition-transform rounded-xl px-10 py-6 text-lg font-sans shadow-lg"
+                        >
+                          Start Your Free Trial
+                        </Button>
+                      </SignInButton>
+                    </SignedOut>
+                    <SignedIn>
+                      <Link href="/dashboard" className="w-full sm:w-auto">
+                        <Button
+                          size="lg"
+                          className="w-full bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 transition-transform rounded-xl px-10 py-6 text-lg font-sans shadow-lg"
+                        >
+                          Start Your Free Trial
+                        </Button>
+                      </Link>
+                    </SignedIn>
                   </div>
                 </div>
                 <p className="text-xs text-ink-light dark:text-dark-text/50 mt-8 transition-colors">
-                  © Copyright @ FinSight AI.com - contact@finsight.ai
+                  © Copyright @ FinSight AI.com
                 </p>
               </CardContent>
             </Card>

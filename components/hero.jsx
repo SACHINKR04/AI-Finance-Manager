@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+
 const HeroSection = () => {
   return (
     <section className="pt-32 pb-20 px-4">
@@ -35,11 +37,20 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Link href="/sign-in">
-            <Button size="lg" className="px-10 py-6 text-lg rounded-2xl bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 shadow-lg transition-colors">
-              Get Started
-            </Button>
-          </Link>
+          <SignedOut>
+            <SignInButton forceRedirectUrl="/dashboard">
+              <Button size="lg" className="px-10 py-6 text-lg rounded-2xl bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 shadow-lg transition-colors">
+                Get Started
+              </Button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <Link href="/dashboard">
+              <Button size="lg" className="px-10 py-6 text-lg rounded-2xl bg-ink dark:bg-brass-glow text-paper dark:text-dark-bg hover:bg-ink-light dark:hover:bg-brass-glow/80 shadow-lg transition-colors">
+                Get Started
+              </Button>
+            </Link>
+          </SignedIn>
         </motion.div>
 
         <motion.div 

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "./ui/button";
-import { PenBox, LayoutDashboard, Home } from "lucide-react";
+import { PenBox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import {
   SignedIn,
@@ -29,15 +29,6 @@ export default function HeaderClient() {
       <div className="flex items-center space-x-6">
         <ThemeToggle />
         <SignedIn>
-          <Link
-            href="/"
-            className="text-ink-light hover:text-ink font-sans transition-colors flex items-center gap-2"
-          >
-            <Button variant="ghost" className="rounded-2xl hover:bg-ink/5">
-              <Home size={18} />
-              <span className="hidden md:inline">Home</span>
-            </Button>
-          </Link>
           <Link
             href="/dashboard"
             className="text-ink-light hover:text-ink font-sans transition-colors flex items-center gap-2"
