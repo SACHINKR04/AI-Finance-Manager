@@ -8,6 +8,7 @@ import aj from "@/lib/arcjet";
 import { request } from "@arcjet/next";
 import { redirect } from "next/navigation";
 import { checkUser } from "@/lib/checkUser";
+import { inngest } from "@/lib/inngest/client";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -96,6 +97,16 @@ export async function createTransaction(data) {
 
     revalidatePath("/dashboard");
     revalidatePath(`/account/${transaction.accountId}`);
+
+    // Fire the transaction.created event to trigger budget alert checks
+    await inngest.send({
+      name: "transaction.created",
+      data: {
+        userId: user.id,
+        accountId: transaction.accountId,
+        transactionId: transaction.id,
+      },
+    });
 
     return { success: true, data: serializeAmount(transaction) };
   } catch (error) {

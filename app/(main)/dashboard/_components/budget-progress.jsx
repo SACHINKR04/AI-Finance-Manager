@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Pencil, Check, X } from "lucide-react";
+import { Pencil, Check, X, AlertTriangle } from "lucide-react";
 import useFetch from "@/hooks/use-fetch";
 import { toast } from "sonner";
 
@@ -68,9 +68,25 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex-1">
-          <CardTitle className="text-sm font-medium">
-            Monthly Budget (Default Account)
-          </CardTitle>
+          <div className="flex items-center gap-2">
+            <CardTitle className="text-sm font-medium">
+              Monthly Budget (Default Account)
+            </CardTitle>
+            {initialBudget && percentUsed >= 80 && (
+              <div
+                className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold animate-pulse ${
+                  percentUsed >= 100
+                    ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                    : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                }`}
+              >
+                <AlertTriangle className="h-3.5 w-3.5" />
+                <span>
+                  {percentUsed >= 100 ? "Over Budget!" : "Nearing Limit"}
+                </span>
+              </div>
+            )}
+          </div>
           <div className="flex items-center gap-2 mt-1">
             {isEditing ? (
               <div className="flex items-center gap-2">
