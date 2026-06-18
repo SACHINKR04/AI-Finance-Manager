@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💰 FinSight — AI Finance Manager
+# FinSight — AI Finance Manager
 
 **A modern, full-stack personal finance platform powered by AI**
 
@@ -17,32 +17,7 @@ Built with Next.js 15 · React 19 · Supabase · Prisma · Clerk · Gemini AI ·
 
 ---
 
-## 📖 Table of Contents
-
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Database Schema](#-database-schema)
-- [Project Structure](#-project-structure)
-- [Pages & Routes](#-pages--routes)
-- [Server Actions](#-server-actions)
-- [Background Jobs (Inngest)](#-background-jobs-inngest)
-- [API Routes](#-api-routes)
-- [Components](#-components)
-- [Email System](#-email-system)
-- [Security](#-security)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [Available Scripts](#-available-scripts)
-- [Seeding the Database](#-seeding-the-database)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
-
----
-
-## 🌟 Overview
+## What is this project?
 
 FinSight is a comprehensive AI-powered personal finance management platform that helps users take control of their financial life. It provides a beautiful, responsive dashboard for managing multiple financial accounts, tracking income and expenses, setting budgets with real-time progress monitoring, and leveraging Google's Gemini AI to automatically extract transaction data from receipt images.
 
@@ -50,7 +25,7 @@ The platform features an event-driven backend powered by Inngest for automated r
 
 ---
 
-## ✨ Features
+## Main Features
 
 ### Core Financial Management
 - **Multi-Account Support** — Create and manage multiple financial accounts (Current & Savings) with real-time balance tracking
@@ -88,7 +63,32 @@ The platform features an event-driven backend powered by Inngest for automated r
 
 ---
 
-## 🛠 Tech Stack
+## Table of Contents
+
+- [What is this project?](#what-is-this-project)
+- [Main Features](#main-features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Database Schema](#database-schema)
+- [Project Structure](#project-structure)
+- [Pages & Routes](#pages--routes)
+- [Server Actions](#server-actions)
+- [Background Jobs (Inngest)](#background-jobs-inngest)
+- [API Routes](#api-routes)
+- [Components](#components)
+- [Email System](#email-system)
+- [Security](#security)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Available Scripts](#available-scripts)
+- [Seeding the Database](#seeding-the-database)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Tech Stack
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
@@ -112,7 +112,7 @@ The platform features an event-driven backend powered by Inngest for automated r
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -155,7 +155,7 @@ The platform features an event-driven backend powered by Inngest for automated r
 
 ---
 
-## 🗄 Database Schema
+## Database Schema
 
 ### Models
 
@@ -225,7 +225,7 @@ The platform features an event-driven backend powered by Inngest for automated r
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ai-finance-platform/
@@ -337,7 +337,7 @@ ai-finance-platform/
 
 ---
 
-## 🗺 Pages & Routes
+## Pages & Routes
 
 | Route | Page | Description |
 |-------|------|-------------|
@@ -356,7 +356,7 @@ ai-finance-platform/
 
 ---
 
-## ⚡ Server Actions
+## Server Actions
 
 ### `actions/account.js`
 | Action | Parameters | Description |
@@ -395,7 +395,7 @@ ai-finance-platform/
 
 ---
 
-## 🔄 Background Jobs (Inngest)
+## Background Jobs (Inngest)
 
 FinSight uses Inngest for event-driven background processing with three core functions:
 
@@ -423,7 +423,7 @@ FinSight uses Inngest for event-driven background processing with three core fun
 
 ---
 
-## 🌐 API Routes
+## API Routes
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
@@ -432,7 +432,7 @@ FinSight uses Inngest for event-driven background processing with three core fun
 
 ---
 
-## 🧩 Components
+## Components
 
 ### Application Components
 
@@ -453,7 +453,7 @@ Accessible, customizable UI building blocks configured in "New York" style:
 
 ---
 
-## 📧 Email System
+## Email System
 
 FinSight uses **Resend** for email delivery and **React Email** for template rendering.
 
@@ -475,7 +475,7 @@ FinSight uses **Resend** for email delivery and **React Email** for template ren
 
 ---
 
-## 🔒 Security
+## Security
 
 ### Authentication (Clerk)
 - Full authentication flow with sign-in, sign-up, and session management
@@ -505,7 +505,7 @@ export const config = {
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **Node.js** 18+ (LTS recommended)
@@ -529,7 +529,7 @@ npm install
 ```
 
 ### 3. Configure Environment Variables
-Create a `.env` file in the root directory. See [Environment Variables](#-environment-variables) for the full list.
+Create a `.env` file in the root directory. See [Environment Variables](#environment-variables) for the full list.
 
 ### 4. Set Up the Database
 Generate the Prisma client and run migrations:
@@ -565,52 +565,52 @@ Opens the React Email preview at **http://localhost:3000** (on a separate port).
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 Create a `.env` file in the project root with the following variables:
 
 ```env
 # Database (Supabase PostgreSQL)
-DATABASE_URL=postgresql://user:password@host:port/database?pgbouncer=true
-DIRECT_URL=postgresql://user:password@host:port/database
+DATABASE_URL=
+DIRECT_URL=
 
 # Authentication (Clerk)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxxxx
-CLERK_SECRET_KEY=sk_test_xxxxx
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
 NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/onboarding
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
 
 # AI (Google Gemini)
-GEMINI_API_KEY=your_gemini_api_key
+GEMINI_API_KEY=
 
 # Email (Resend)
-RESEND_API_KEY=re_xxxxx
+RESEND_API_KEY=
 
 # Security (ArcJet)
-ARCJET_KEY=ajkey_xxxxx
+ARCJET_KEY=
 ```
 
 ### Variable Details
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `DATABASE_URL` | ✅ | Supabase PostgreSQL connection string (with PgBouncer for connection pooling) |
-| `DIRECT_URL` | ✅ | Direct PostgreSQL connection string (used by Prisma for migrations) |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | ✅ | Clerk publishable key (public, starts with `pk_`) |
-| `CLERK_SECRET_KEY` | ✅ | Clerk secret key (server-only, starts with `sk_`) |
-| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | ✅ | Path for the sign-in page |
-| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | ✅ | Path for the sign-up page |
-| `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | ✅ | Redirect path after successful sign-in |
-| `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | ✅ | Redirect path after successful sign-up |
-| `GEMINI_API_KEY` | ✅ | Google Gemini API key for AI receipt scanning |
-| `RESEND_API_KEY` | ✅ | Resend API key for sending transactional emails |
-| `ARCJET_KEY` | ✅ | ArcJet API key for rate limiting and security |
+| `DATABASE_URL` | Yes | Supabase PostgreSQL connection string (with PgBouncer for connection pooling) |
+| `DIRECT_URL` | Yes | Direct PostgreSQL connection string (used by Prisma for migrations) |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk publishable key (public, starts with `pk_`) |
+| `CLERK_SECRET_KEY` | Yes | Clerk secret key (server-only, starts with `sk_`) |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | Yes | Path for the sign-in page |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | Yes | Path for the sign-up page |
+| `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | Yes | Redirect path after successful sign-in |
+| `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | Yes | Redirect path after successful sign-up |
+| `GEMINI_API_KEY` | Yes | Google Gemini API key for AI receipt scanning |
+| `RESEND_API_KEY` | Yes | Resend API key for sending transactional emails |
+| `ARCJET_KEY` | Yes | ArcJet API key for rate limiting and security |
 
 ---
 
-## 📜 Available Scripts
+## Available Scripts
 
 | Script | Command | Description |
 |--------|---------|-------------|
@@ -623,7 +623,7 @@ ARCJET_KEY=ajkey_xxxxx
 
 ---
 
-## 🌱 Seeding the Database
+## Seeding the Database
 
 FinSight includes a seed action that generates realistic sample data for development and testing:
 
@@ -644,7 +644,7 @@ The seeder creates:
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Deploy to Vercel (Recommended)
 
@@ -658,7 +658,7 @@ The seeder creates:
    - Vercel will auto-detect the Next.js framework
 
 3. **Configure Environment Variables**
-   - Add all environment variables from [Environment Variables](#-environment-variables) in the Vercel dashboard
+   - Add all environment variables from [Environment Variables](#environment-variables) in the Vercel dashboard
 
 4. **Configure Database**
    - Ensure your Supabase database allows connections from Vercel's IP ranges
@@ -686,7 +686,7 @@ The seeder creates:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Here's how to get started:
 
@@ -715,7 +715,7 @@ Contributions are welcome! Here's how to get started:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
@@ -723,8 +723,8 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 <div align="center">
 
-**Built with ❤️ by [Sachin Kumar](https://github.com/SACHINKR04)**
+**Built by [Sachin Kumar](https://github.com/SACHINKR04)**
 
-[⬆ Back to Top](#-finsight--ai-finance-manager)
+[Back to Top](#what-is-this-project)
 
 </div>
